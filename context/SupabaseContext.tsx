@@ -13,7 +13,8 @@ interface SupabaseContextProps {
     loading: boolean;
     error: Error | null;
     restaurants: Restaurant[],
-    addRestaurant: (res: Omit<Omit<Restaurant, "id">, "created_at">) => Promise<void>
+    addRestaurant: (res: Omit<Omit<Restaurant, "id">, "created_at">) => Promise<void>,
+    signup: (email: string, password: string) => Promise<void>
 }
 
 const SupabaseContext = createContext<SupabaseContextProps | undefined>(undefined);
@@ -85,6 +86,17 @@ const SupabaseProvider = ({children} : { children: ReactNode}) => {
         }
     }
 
+    const signup = async(email: string, password: string) => {
+        try {
+            const {error} = await supabase.auth.signUp({email, password});
+
+            if (error) throw error;
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }
+
     const addRestaurant = async(restaurant: Omit<Omit<Restaurant, "id">, "created_at">) => {
         try {
             const { error } = await supabase.from("restaurants").insert(restaurant);
@@ -132,7 +144,7 @@ const SupabaseProvider = ({children} : { children: ReactNode}) => {
 
 
     return (
-        <SupabaseContext.Provider value={{loggingIn, initializing, session, login, logout, loading, restaurants, error, addRestaurant}}>
+        <SupabaseContext.Provider value={{loggingIn, initializing, session, login, logout, loading, restaurants, error, addRestaurant, signup}}>
             {children}
         </SupabaseContext.Provider>
     )

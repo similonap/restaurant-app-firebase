@@ -1,5 +1,3 @@
-import { SignInForm } from "@/components/sign-in-form";
-import { SocialConnections } from "@/components/social-connections";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,12 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Pressable, View } from "react-native";
 import { useState } from "react";
 import { useSupabase } from "@/context/SupabaseContext";
+import { useRouter } from "expo-router";
 
 const LoginScreen = () => {
     const [email ,setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     
     const { login } = useSupabase();
+    const router = useRouter();
 
     const handleLogin = async() => {
         try {
@@ -68,15 +68,18 @@ const LoginScreen = () => {
                             <Text>Continue</Text>
                         </Button>
                     </View>
+                    <View className="flex-row gap-2">
                     <Text className="text-center text-sm">
                         Don&apos;t have an account?{' '}
-                        <Pressable
+                        
+                    </Text>
+                    <Pressable
                             onPress={() => {
-                                // TODO: Navigate to sign up screen
+                                router.push("/signup");
                             }}>
                             <Text className="text-sm underline underline-offset-4">Sign up</Text>
                         </Pressable>
-                    </Text>
+                        </View>
                 </CardContent>
             </Card>
         </View>

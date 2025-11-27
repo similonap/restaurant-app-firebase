@@ -21,8 +21,8 @@ const MapScreen = () => {
 
             <MapView style={{flex: 1}}>
                 {
-                    restaurants.map(restaurant => (
-                        <Marker coordinate={{
+                    restaurants.map((restaurant) => (
+                        <Marker key={restaurant.id} coordinate={{
                             latitude: restaurant.latitude,
                             longitude: restaurant.longitude
                         }} title={restaurant.title}/>
